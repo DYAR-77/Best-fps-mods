@@ -1,0 +1,43 @@
+name: Build DYAR FPS LTW Pack
+
+on:
+  workflow_dispatch:
+    inputs:
+      mc_version:
+        description: "إصدار ماين كرافت"
+        default: "1.21.11"
+  push:
+    branches: [ main, master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Unzip pack
+        run: |
+          Z=$(ls *.zip | head -n 1)
+          unzip -o "$Z" -d work
+          P=$(dirname "$(find work -name mods.txt | head -n 1)")
+          echo "PACK=$P" >> $GITHUB_ENV
+
+      - name: Download mods from Modrinth
+        run: python "$PACK/scripts/fetch_mods.py" "${{ github.event.inputs.mc_version || '1.21.11' }}" "$PACK"
+
+      - name: Assemble
+        run: |
+          mkdir -p out/mods
+          cp "$PACK"/downloaded/*.jar out/mods/
+          cp "$PACK/overlay/options.txt" out/
+          cp "$PACK/MODS-REPORT.txt" out/
+          cp "$PACK/README.md" out/README-DYAR.md
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: DYAR-FPS-LTW-pack
+          path: out
