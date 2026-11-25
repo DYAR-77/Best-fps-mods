@@ -1,4 +1,4 @@
-name: Build DYAR FPS PC Pack
+name: Build DYAR FPS Pack
 
 on:
   workflow_dispatch:
@@ -33,11 +33,11 @@ jobs:
         run: |
           mkdir -p out/mods
           cp "$PACK"/downloaded/*.jar out/mods/
-          cp "$PACK/overlay/options.txt" out/
+          cp "$PACK/overlay/options.txt" out/options-pack.txt
           cp "$PACK/MODS-REPORT.txt" out/
           cp "$PACK/README.md" out/README-DYAR.md
 
       - uses: actions/upload-artifact@v4
         with:
-          name: DYAR-FPS-PC-pack
+          name: DYAR-FPS-pack
           path: out
