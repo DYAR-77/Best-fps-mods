@@ -1,4 +1,4 @@
-name: Build DYAR FPS LTW Pack
+name: Build DYAR FPS PC Pack
 
 on:
   workflow_dispatch:
@@ -39,5 +39,5 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: DYAR-FPS-LTW-pack
+          name: DYAR-FPS-PC-pack
           path: out
